@@ -19,3 +19,7 @@ jobs:
         run: bundle exec jekyll build --config docs/_config.yml
         env:
           JEKYLL_ENV: production
+on:
+  push:
+    branches:
+      - main
