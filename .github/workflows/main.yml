@@ -1,3 +1,10 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main  # main ブランチにプッシュされたとき
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -6,17 +13,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.7.x
-
-      - name: Install dependencies
-        run: |
-          gem install bundler
-          bundle install
+      # 他のステップを追加する場合
 
       - name: Build Jekyll site
-        run: bundle exec jekyll build
+        run: bundle exec jekyll build --config docs/_config.yml
         env:
           JEKYLL_ENV: production
