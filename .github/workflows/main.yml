@@ -3,14 +3,14 @@ name: Build and Deploy Jekyll Site
 on:
   push:
     branches:
-      - main  # または、対象のブランチ
+      - main
   pull_request:
     branches:
-      - main  # または、対象のブランチ
+      - main
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # 使用するOS
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -19,21 +19,20 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '2.7'  # 使用するRubyのバージョンを指定
+          ruby-version: '3.0'  # Rubyのバージョンを指定
 
       - name: Install Bundler
-        run: gem install bundler
+        run: gem install bundler -v 2.4.22  # Bundlerのバージョンを指定してインストール
 
       - name: Install dependencies
-        run: bundle install  # Bundlerで依存関係をインストール
+        run: bundle install
 
       - name: Build site
-        run: bundle exec jekyll build --config docs/_config.yml  # Jekyllサイトをビルド
+        run: bundle exec jekyll build --config docs/_config.yml
 
       - name: Deploy
         run: |
           echo "Deploy step goes here"
-          # デプロイのコマンドやスクリプトをここに追加
         env:
           DEPLOYMENT_KEY: ${{ secrets.DEPLOYMENT_KEY }}
 
@@ -42,5 +41,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site  # Jekyllのビルドアウトプットディレクトリ
-
+          publish_dir: ./_site
