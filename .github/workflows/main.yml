@@ -1,22 +1,46 @@
-name: Build and Deploy
+name: Build and Deploy Jekyll Site
 
 on:
   push:
     branches:
-      - main  # main ブランチにプッシュされたとき
+      - main  # または、対象のブランチ
+  pull_request:
+    branches:
+      - main  # または、対象のブランチ
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    
+    runs-on: ubuntu-latest  # 使用するOS
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      # 他のステップを追加する場合
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7'  # 使用するRubyのバージョンを指定
 
-      - name: Build Jekyll site
-        run: bundle exec jekyll build --config docs/_config.yml
+      - name: Install Bundler
+        run: gem install bundler
+
+      - name: Install dependencies
+        run: bundle install  # Bundlerで依存関係をインストール
+
+      - name: Build site
+        run: bundle exec jekyll build --config docs/_config.yml  # Jekyllサイトをビルド
+
+      - name: Deploy
+        run: |
+          echo "Deploy step goes here"
+          # デプロイのコマンドやスクリプトをここに追加
         env:
-          JEKYLL_ENV: production
+          DEPLOYMENT_KEY: ${{ secrets.DEPLOYMENT_KEY }}
+
+      - name: Push to GitHub Pages (optional)
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site  # Jekyllのビルドアウトプットディレクトリ
 
