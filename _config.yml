@@ -1,0 +1,23 @@
+# Site settings
+title: My Jekyll Site          # サイトのタイトル
+description: A description of my site.  # サイトの説明
+baseurl: ""                    # サイトのベースURL（サブディレクトリがない場合は空）
+url: "http://example.com"     # サイトのURL
+
+# Build settings
+markdown: kramdown              # Markdownエンジン
+theme: minima                  # テーマ名
+permalink: pretty              # パーマリンクの形式
+paginate: 10                   # ページネーションの数
+
+# Exclude and include
+exclude:
+  - README.md                  # ビルドから除外するファイル
+  - LICENSE
+include:
+  - _pages                     # ビルドに含めるファイル
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
